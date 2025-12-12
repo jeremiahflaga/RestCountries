@@ -1,8 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using RestCountries.Data;
+using RestCountries.WebApi.Controllers.Import;
 using Scalar.AspNetCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<CountriesDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IImportCountriesRepository, ImportCountriesRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
