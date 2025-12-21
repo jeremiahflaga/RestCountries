@@ -38,13 +38,13 @@ public class ImportCountriesRepository : IImportCountriesRepository
     public async Task<BulkUpsertStatsInfo> BulkUpsertAsync(IEnumerable<Country> countries)
     {
         await dbContext.BulkInsertOrUpdateAsync(countries, bulkConfigForCountries);
-        return GetBulkUpsertStatsInfo(bulkConfigForCountryLanguages.StatsInfo);
+        return GetBulkUpsertStatsInfo(bulkConfigForCountries.StatsInfo);
     }
 
     public async Task<BulkUpsertStatsInfo> BulkUpsertAsync(IEnumerable<Language> languages)
     {
         await dbContext.BulkInsertOrUpdateAsync(languages, bulkConfigForLanguages);
-        return GetBulkUpsertStatsInfo(bulkConfigForCountryLanguages.StatsInfo);
+        return GetBulkUpsertStatsInfo(bulkConfigForLanguages.StatsInfo);
     }
 
     public async Task<BulkUpsertStatsInfo> BulkUpsertAsync(IEnumerable<CountryLanguage> countryLanguages)
@@ -67,8 +67,8 @@ public class ImportCountriesRepository : IImportCountriesRepository
     {
         return new BulkUpsertStatsInfo
         {
-            InsertedCount = statsInfo.StatsNumberInserted,
-            UpdatedCount = statsInfo.StatsNumberUpdated
+            InsertedCount = statsInfo?.StatsNumberInserted ?? 0,
+            UpdatedCount = statsInfo?.StatsNumberUpdated ?? 0
         };
     }
 }
