@@ -12,7 +12,7 @@ public class Country
     public int Id { get; protected set; }
     public string CCA2 { get; set; }
     public string? OfficialName { get; set; }
-    public string? CommonName { get; set; }
+    public string? Name { get; set; }
     public string? Region { get; set; }
     public string? Subregion { get; set; }
     public string? Capital { get; set; }

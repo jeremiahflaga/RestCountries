@@ -28,7 +28,7 @@ public class CountriesRepository : ICountriesRepository
 
         if (!string.IsNullOrEmpty(q.Name))
             queryable = queryable.Where(
-                c => c.CommonName.Contains(q.Name) || c.OfficialName.Contains(q.Name));
+                c => c.Name.Contains(q.Name) || c.OfficialName.Contains(q.Name));
 
 
         if (q.MinPopulation.HasValue)

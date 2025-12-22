@@ -60,7 +60,7 @@ public class ImportController : ControllerBase
             var country = new Country(countryDto.cca2)
             {
                 OfficialName = countryDto.name?.official,
-                CommonName = countryDto.name?.common,
+                Name = countryDto.name?.common,
                 Region = countryDto.region,
                 Subregion = countryDto.subregion,
                 Capital = countryDto.capital != null && countryDto.capital.Count > 0 ? countryDto.capital[0] : null,

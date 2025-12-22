@@ -17,7 +17,7 @@ public class CountriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetCountries([FromQuery] GetCountriesInputDto q)
+    public IActionResult GetCountries([FromQuery] GetCountriesInputDto q)
     {
         var countries = countriesRepository.GetAll(new CountryQuery
         {
@@ -30,16 +30,9 @@ public class CountriesController : ControllerBase
         });
 
         // Data Shaping
-        if (!string.IsNullOrEmpty(q.Fields))
-        {
-            var shapedData = ShapeData(countries, q.Fields);
-            return Ok(shapedData);
-        }
-        else
-        {
-            var shapedData = ShapeData(countries, "name,population,capital");
-            return Ok(shapedData);
-        }
+        var fields = !string.IsNullOrEmpty(q.Fields) ? q.Fields : "name,population,capital,region";
+        var shapedData = ShapeData(countries, q.Fields);
+        return Ok(shapedData);
     }
 
     private static IEnumerable<IDictionary<string, object>> ShapeData(IEnumerable<Country> data, string? fields)
@@ -57,9 +50,10 @@ public class CountriesController : ControllerBase
                 if (fieldList is null || fieldList.Contains(key.ToLowerInvariant()))
                     dict[key] = value!;
             }
-            Add("name", item.OfficialName);
+            Add("name", item.Name);
             Add("population", item.Population);
             Add("capital", item.Capital);
+            Add("region", item.Region);
 
             yield return dict;
         }
