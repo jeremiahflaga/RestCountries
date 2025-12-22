@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RestCountries.Core;
+using RestCountries.Core.Entities;
+using RestCountries.Core.Services;
 using System.Diagnostics;
-using System.Diagnostics.Metrics;
 
 namespace RestCountries.WebApi.Controllers.Import;
 
@@ -31,7 +31,7 @@ public class ImportController : ControllerBase
         {
             var httpClient = httpClientFactory.CreateClient("RestCountriesHttpClient");
             using var response = await httpClient.GetAsync("/v3.1/independent?status=true");
-            var countriesDto = await response.Content.ReadFromJsonAsync<List<CountryDto>>();
+            var countriesDto = await response.Content.ReadFromJsonAsync<List<ImportCountryDto>>();
 
             var importLanguagesStats = await BulkImportLanguages(countriesDto);
             var importCountriesStats = await BulkImportCountries(countriesDto);
@@ -43,6 +43,7 @@ public class ImportController : ControllerBase
         }
         catch (Exception ex)
         {
+            logger.LogError(ex.Message);
             throw;
         }
         finally
@@ -52,7 +53,7 @@ public class ImportController : ControllerBase
         }
     }
 
-    private async Task<BulkUpsertStatsInfo> BulkImportCountries(List<CountryDto>? countriesDto)
+    private async Task<BulkUpsertStatsInfo> BulkImportCountries(List<ImportCountryDto>? countriesDto)
     {
         var countries = new List<Country>();
         foreach (var countryDto in countriesDto)
@@ -66,7 +67,6 @@ public class ImportController : ControllerBase
                 Capital = countryDto.capital != null && countryDto.capital.Count > 0 ? countryDto.capital[0] : null,
                 Population = countryDto.population,
                 Area = countryDto.area,
-                //CountryLanguages = countryDto.languages.Select(x => new CountryLanguage { Code = x.Key, Name = x.Value }).ToList(),
                 Flag = !string.IsNullOrEmpty(countryDto.flags?.png) ? countryDto.flags.png : countryDto.flags?.svg
             };
 
@@ -75,7 +75,7 @@ public class ImportController : ControllerBase
         return await importCountriesRepository.BulkUpsertAsync(countries);
     }
 
-    private async Task<BulkUpsertStatsInfo> BulkImportLanguages(List<CountryDto>? countriesDto)
+    private async Task<BulkUpsertStatsInfo> BulkImportLanguages(List<ImportCountryDto>? countriesDto)
     {
         var languages = countriesDto?.SelectMany(c => c.languages ?? new Dictionary<string, string>())
             .DistinctBy(l => l.Key)
@@ -84,7 +84,7 @@ public class ImportController : ControllerBase
         return await importCountriesRepository.BulkUpsertAsync(languages);
     }
 
-    private async Task<BulkUpsertStatsInfo> BulkImportCountryLanguages(List<CountryDto>? countriesDto)
+    private async Task<BulkUpsertStatsInfo> BulkImportCountryLanguages(List<ImportCountryDto>? countriesDto)
     {
         var languages = await importCountriesRepository.GetAllLanguagesAsync();
         var countries = await importCountriesRepository.GetAllCountriesAsync();

@@ -1,15 +1,8 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using RestCountries.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RestCountries.Core.Entities;
+using RestCountries.Core.Services;
 using System.Linq.Dynamic.Core;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RestCountries.Data;
+namespace RestCountries.Data.Repositories;
 public class CountriesRepository : ICountriesRepository
 {
     private readonly CountriesDbContext dbContext;

@@ -1,4 +1,6 @@
-﻿namespace RestCountries.Core;
+﻿using RestCountries.Core.Entities;
+
+namespace RestCountries.Core.Services;
 
 public interface IImportCountriesRepository
 {

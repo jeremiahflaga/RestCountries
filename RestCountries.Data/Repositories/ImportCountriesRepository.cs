@@ -1,8 +1,9 @@
 ﻿using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
-using RestCountries.Core;
+using RestCountries.Core.Entities;
+using RestCountries.Core.Services;
 
-namespace RestCountries.Data;
+namespace RestCountries.Data.Repositories;
 
 public class ImportCountriesRepository : IImportCountriesRepository
 {
@@ -15,16 +16,12 @@ public class ImportCountriesRepository : IImportCountriesRepository
 
     private static BulkConfig bulkConfigForCountries = new BulkConfig
     {
-        //SetOutputIdentity = true,      // get generated IDs for inserts
-        //PreserveInsertOrder = true,    // keep list order if needed
         UpdateByProperties = new List<string> { "CCA2" }, // default is PK
         CalculateStats = true,
     };
 
     private static BulkConfig bulkConfigForLanguages = new BulkConfig
     {
-        //SetOutputIdentity = true,      // get generated IDs for inserts
-        //PreserveInsertOrder = true,    // keep list order if needed
         UpdateByProperties = new List<string> { "Code" },
         CalculateStats = true,
     };
@@ -62,7 +59,7 @@ public class ImportCountriesRepository : IImportCountriesRepository
         return await dbContext.Countries.ToListAsync();
     }
 
-    private BulkUpsertStatsInfo GetBulkUpsertStatsInfo(StatsInfo statsInfo)
+    private BulkUpsertStatsInfo GetBulkUpsertStatsInfo(StatsInfo? statsInfo)
     {
         return new BulkUpsertStatsInfo
         {

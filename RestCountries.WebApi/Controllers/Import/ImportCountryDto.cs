@@ -1,6 +1,6 @@
 ﻿namespace RestCountries.WebApi.Controllers.Import;
 
-public class CountryDto
+public class ImportCountryDto
 {
     public Name name { get; set; }
     public string region { get; set; }

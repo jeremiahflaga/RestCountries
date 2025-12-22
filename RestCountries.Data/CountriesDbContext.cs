@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RestCountries.Core;
+using RestCountries.Core.Entities;
 
 namespace RestCountries.Data;
 
@@ -21,14 +21,6 @@ public class CountriesDbContext : DbContext
             .Property(x => x.CCA2)
             .HasMaxLength(2);
 
-        //modelBuilder.Entity<Country>(entity =>
-        //{
-        //    entity.OwnsMany(p => p.Languages, ownedNavigationBuilder =>
-        //    {
-        //        ownedNavigationBuilder.ToJson();
-        //    });
-        //});
-
         modelBuilder.Entity<Language>()
             .Property(x => x.Code)
             .HasMaxLength(3);
@@ -37,7 +29,6 @@ public class CountriesDbContext : DbContext
         {
             x.ToTable("CountryLanguages");
 
-            // Composite PK and name
             x.HasKey(sc => new { sc.CountryId, sc.LanguageId });
 
             x.HasOne(sc => sc.Country)

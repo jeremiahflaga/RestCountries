@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using RestCountries.Core;
+﻿using Microsoft.AspNetCore.Mvc;
+using RestCountries.Core.Entities;
+using RestCountries.Core.Services;
 
 namespace RestCountries.WebApi.Controllers.Countries;
 
@@ -42,6 +41,7 @@ public class CountriesController : ControllerBase
             : fields.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
                     .Select(f => f.ToLowerInvariant())
                     .ToHashSet();
+
         foreach (var item in data)
         {
             var dict = new Dictionary<string, object>();

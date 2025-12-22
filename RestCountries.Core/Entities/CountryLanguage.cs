@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace RestCountries.Core.Entities;
 
-namespace RestCountries.Core;
 public class CountryLanguage
 {
     public int CountryId { get; set; }

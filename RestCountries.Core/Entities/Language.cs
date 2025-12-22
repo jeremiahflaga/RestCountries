@@ -1,4 +1,4 @@
-﻿namespace RestCountries.Core;
+﻿namespace RestCountries.Core.Entities;
 
 public class Language
 {

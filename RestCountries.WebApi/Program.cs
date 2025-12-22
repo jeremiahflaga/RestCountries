@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using RestCountries.Core;
+using RestCountries.Core.Services;
 using RestCountries.Data;
-using RestCountries.WebApi.Controllers.Import;
+using RestCountries.Data.Repositories;
 using Scalar.AspNetCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
