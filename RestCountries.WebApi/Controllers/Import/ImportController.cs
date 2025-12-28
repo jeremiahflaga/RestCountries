@@ -10,18 +10,15 @@ namespace RestCountries.WebApi.Controllers.Import;
 public class ImportController : ControllerBase
 {
     private readonly IHttpClientFactory httpClientFactory;
-    //private readonly ImportService importService;
     private readonly IImportCountriesRepository importCountriesRepository;
     private readonly ILogger<ImportController> logger;
 
     public ImportController(
         IHttpClientFactory httpClientFactory, 
-        //ImportService importService,
         IImportCountriesRepository importCountriesRepository,
         ILogger<ImportController> logger)
     {
         this.httpClientFactory = httpClientFactory;
-        //this.importService = importService;
         this.importCountriesRepository = importCountriesRepository;
         this.logger = logger;
     }
@@ -85,30 +82,4 @@ public class ImportController : ControllerBase
         }
         return await importCountriesRepository.BulkUpsertAsync(countries);
     }
-
-    //private async Task<BulkUpsertStatsInfo> BulkImportLanguages(List<ImportCountryDto>? countriesDto)
-    //{
-    //    var languages = countriesDto?.SelectMany(c => c.languages ?? new Dictionary<string, string>())
-    //        .DistinctBy(l => l.Key)
-    //        .Select(l => new Language(Guid.NewGuid(), l.Key, l.Value))
-    //        .ToList();
-    //    return await importCountriesRepository.BulkUpsertAsync(languages);
-    //}
-
-    //private async Task<BulkUpsertStatsInfo> BulkImportCountryLanguages(List<ImportCountryDto>? countriesDto)
-    //{
-    //    var languages = await importCountriesRepository.GetAllLanguagesAsync();
-    //    var countries = await importCountriesRepository.GetAllCountriesAsync();
-    //    var countryLanguages = new List<CountryLanguage>();
-    //    foreach (var country in countries)
-    //    {
-    //        var languagesDto = countriesDto.FirstOrDefault(c => c.cca2 == country.CCA2)?.languages;
-    //        foreach (var langDto in languagesDto)
-    //        {
-    //            var lang = languages.FirstOrDefault(l => l.Code == langDto.Key);
-    //            countryLanguages.Add(new CountryLanguage { CountryId = country.Id, LanguageId = lang.Id });
-    //        }
-    //    }
-    //    return await importCountriesRepository.BulkUpsertAsync(countryLanguages);
-    //}
 }

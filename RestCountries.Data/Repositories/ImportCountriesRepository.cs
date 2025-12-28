@@ -18,14 +18,12 @@ public class ImportCountriesRepository : IImportCountriesRepository
     private static BulkConfig bulkConfigForCountries = new BulkConfig
     {
         UpdateByProperties = new List<string> { "CCA2" }, // default is PK
-        //PropertiesToExcludeOnUpdate = new List<string> { "CountryLanguages" },
         CalculateStats = true,
     };
 
     private static BulkConfig bulkConfigForLanguages = new BulkConfig
     {
         UpdateByProperties = new List<string> { "Code" },
-        //PropertiesToExcludeOnUpdate = new List<string> { "CountryLanguages" },
         CalculateStats = true,
     };
 

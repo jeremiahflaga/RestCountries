@@ -17,10 +17,6 @@ public class CountriesDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<CountryDbModel>()
-        //    .Property(x => x.Id)
-        //    .HasDefaultValueSql("NEWSEQUENTIALID()");
-
         modelBuilder.Entity<CountryDbModel>()
             .Property(x => x.CCA2)
             .HasMaxLength(2);
