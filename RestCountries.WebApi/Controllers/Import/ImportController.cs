@@ -24,7 +24,7 @@ public class ImportController : ControllerBase
     }
 
     [HttpPost]
-    public async Task Import()
+    public async Task<IActionResult> Import()
     {
         var stopwatch = Stopwatch.StartNew();
         try
@@ -34,8 +34,9 @@ public class ImportController : ControllerBase
 
             if (!response.IsSuccessStatusCode)
             {
-                logger.LogError($"Failed to fetch countries data. Status code: {response.StatusCode}");
-                return;
+                var errorMessage = $"Failed to fetch countries data. Status code: {response.StatusCode}";
+                logger.LogError(errorMessage);
+                return StatusCode(StatusCodes.Status500InternalServerError, errorMessage);
             }
 
             var countriesDto = await response.Content.ReadFromJsonAsync<List<ImportCountryDto>>();
@@ -48,13 +49,15 @@ public class ImportController : ControllerBase
         catch (Exception ex)
         {
             logger.LogError(ex.Message);
-            throw;
+            return StatusCode(StatusCodes.Status500InternalServerError, "Call to RestCountries API failed.");
         }
         finally
         {
             stopwatch.Stop();
             logger.LogInformation($"Import completed in {stopwatch.ElapsedMilliseconds} ms");
         }
+
+        return Ok();
     }
 
     private async Task<BulkUpsertStatsInfo> BulkImportCountries(List<ImportCountryDto>? countriesDto)
