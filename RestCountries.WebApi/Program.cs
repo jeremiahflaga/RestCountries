@@ -22,7 +22,10 @@ builder.Services
     {
         c.BaseAddress = new Uri("https://restcountries.com");
     })
-    .AddStandardResilienceHandler();
+    .AddStandardResilienceHandler(options =>
+    {
+        options.Retry.MaxRetryAttempts = 3;
+    });
 
 var app = builder.Build();
 
