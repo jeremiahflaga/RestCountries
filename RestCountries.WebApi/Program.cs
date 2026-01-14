@@ -42,4 +42,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/ping", () => "Hello, World!");
+
 app.Run();
+
+// Make the implicit Program class accessible to integration tests
+public partial class Program { }
