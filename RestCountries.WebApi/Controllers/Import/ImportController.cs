@@ -54,9 +54,9 @@ public class ImportController : ControllerBase
         finally
         {
             stopwatch.Stop();
-            logger.LogInformation($"Import completed in {stopwatch.ElapsedMilliseconds} ms");
         }
 
+        logger.LogInformation($"Import completed in {stopwatch.ElapsedMilliseconds} ms");
         return Ok();
     }
 
